@@ -1,0 +1,6 @@
+cropped/
+rawImages/
+dist/
+build/
+*.spec
+*.zip
