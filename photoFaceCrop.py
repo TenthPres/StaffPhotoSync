@@ -31,7 +31,7 @@ for file in files:
                 scaleFactor=scale,
                 minNeighbors=5,
                 minSize=(50, 50),
-                maxSize=(400, 400),
+                maxSize=(4000, 4000),
                 flags=cv2.CASCADE_SCALE_IMAGE
             )
         except:
@@ -66,12 +66,12 @@ for file in files:
         # image = cv2.circle(image, (fx, fy), 2, (255, 0, 0), 3)
 
         # face size.  Used for scaling.
-        padding = max(fw, fh) * .9
+        padding = max(fw, fh) * 0.9
 
         baseH, baseW, n = image.shape
         hwRatio = 17.0/12.0
-        y1 = int(fy - padding * (hwRatio / 3 * 2.5))
-        y2 = int(fy + padding * (hwRatio / 3 * 3.5))
+        y1 = int(fy - padding * (hwRatio / 3 * 2))
+        y2 = int(fy + padding * (hwRatio / 3 * 4))
         x1 = int(fx - padding)
         x2 = int(fx + padding)
 
@@ -81,14 +81,15 @@ for file in files:
         newImage = white
         print '{} {} {} {}'.format(x1, x2, y1, y2)
 
+        yOff = 0
         if y2 > baseH:
             print "Crop extends beyond source bounds by {} rows.".format(y2 - baseH)
+            yOff = y2 - baseH
             y2 = baseH
 
-        yOff = 0
         if y1 < 0:
             print "Crop extends above source bounds by {} rows.".format(-y1)
-            yOff = -y1
+            yOff -= y1
             y1 = 0
 
         newImage[yOff:y2 - y1 + yOff, 0:x2 - x1] = image[y1:y2, x1:x2]
